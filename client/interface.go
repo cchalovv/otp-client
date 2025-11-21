@@ -2,7 +2,7 @@ package otp
 
 import (
 	"context"
-	"github.com/mechta-market/otp-client/model"
+	"github.com/cchalovv/otp-client/model"
 )
 
 type Client interface {

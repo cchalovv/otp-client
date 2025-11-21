@@ -3,10 +3,10 @@ package grpc_client
 import (
 	"context"
 	"fmt"
+	otp "github.com/cchalovv/otp-client/client"
+	"github.com/cchalovv/otp-client/model"
+	otpPb "github.com/cchalovv/otp-client/pkg/proto/otp"
 	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
-	otp "github.com/mechta-market/otp-client/client"
-	"github.com/mechta-market/otp-client/model"
-	otpPb "github.com/mechta-market/otp-client/pkg/proto/otp"
 	"github.com/opentracing/opentracing-go"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"

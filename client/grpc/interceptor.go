@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"github.com/mechta-market/otp-client/pkg/errs"
-	"github.com/mechta-market/otp-client/pkg/proto/common"
+	"github.com/cchalovv/otp-client/pkg/errs"
+	"github.com/cchalovv/otp-client/pkg/proto/common"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
 )

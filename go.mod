@@ -1,4 +1,4 @@
-module github.com/mechta-market/otp-client
+module github.com/cchalovv/otp-client
 
 go 1.24.2
 
