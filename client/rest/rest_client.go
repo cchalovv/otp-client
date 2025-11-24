@@ -25,14 +25,14 @@ func NewClient(url, token string) otp.Client {
 	}
 }
 
-func (c Client) Connect() error {
+func (c *Client) Connect() error {
 	c.c = &http.Client{
 		Timeout: time.Second * 5,
 	}
 	return nil
 }
 
-func (c Client) Close() error {
+func (c *Client) Close() error {
 	return nil
 }
 
@@ -40,7 +40,7 @@ type GenerateResponse struct {
 	Code string `json:"code"`
 }
 
-func (c Client) Generate(ctx context.Context, req model.CreateRequest) (code string, err error) {
+func (c *Client) Generate(ctx context.Context, req model.GenerateRequest) (code string, err error) {
 	if c.c == nil {
 		return "", fmt.Errorf("http client is not initialized")
 	}
@@ -82,7 +82,7 @@ func (c Client) Generate(ctx context.Context, req model.CreateRequest) (code str
 	return resp.Code, nil
 }
 
-func (c Client) Verify(ctx context.Context, req model.VerifyRequest) error {
+func (c *Client) Verify(ctx context.Context, req model.VerifyRequest) error {
 	if c.c == nil {
 		return fmt.Errorf("http client is not initialized")
 	}

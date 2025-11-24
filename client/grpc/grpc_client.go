@@ -76,7 +76,7 @@ func (c *Client) Close() error {
 	return c.conn.Close()
 }
 
-func (c *Client) Generate(ctx context.Context, req model.CreateRequest) (string, error) {
+func (c *Client) Generate(ctx context.Context, req model.GenerateRequest) (string, error) {
 	resp, err := c.client.Generate(ctx, &otpPb.GenerateReq{
 		Data: req.Data,
 	})

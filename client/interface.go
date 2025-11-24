@@ -9,6 +9,6 @@ type Client interface {
 	Connect() error
 	Close() error
 
-	Generate(ctx context.Context, req model.CreateRequest) (code string, err error)
+	Generate(ctx context.Context, req model.GenerateRequest) (code string, err error)
 	Verify(ctx context.Context, req model.VerifyRequest) error
 }

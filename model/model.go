@@ -1,6 +1,6 @@
 package model
 
-type CreateRequest struct {
+type GenerateRequest struct {
 	// Data is some payload or identifier to uniquely generate OTP code
 	Data string
 }
