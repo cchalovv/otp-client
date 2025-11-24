@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	otp "github.com/cchalovv/otp-client/client"
 	"github.com/cchalovv/otp-client/model"
@@ -71,7 +72,11 @@ func (c *Client) Generate(ctx context.Context, req model.GenerateRequest) (code 
 	}
 
 	if response.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("unexpected status code: %d: body: %s", response.StatusCode, string(bs))
+		var errResp ErrorResponse
+		if err = json.Unmarshal(bs, &errResp); err != nil {
+			return "", fmt.Errorf("unexpected status code: %d: body: %s", response.StatusCode, string(bs))
+		}
+		return "", errors.New(errResp.Code)
 	}
 
 	var resp GenerateResponse
@@ -113,7 +118,11 @@ func (c *Client) Verify(ctx context.Context, req model.VerifyRequest) error {
 	}
 
 	if response.StatusCode != http.StatusOK {
-		return fmt.Errorf("unexpected status code: %d: body: %s", response.StatusCode, string(bs))
+		var errResp ErrorResponse
+		if err = json.Unmarshal(bs, &errResp); err != nil {
+			return fmt.Errorf("unexpected status code: %d: body: %s", response.StatusCode, string(bs))
+		}
+		return errors.New(errResp.Code)
 	}
 
 	return nil
