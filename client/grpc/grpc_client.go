@@ -17,20 +17,22 @@ import (
 const clientName = "otp-client"
 
 type Client struct {
-	uri      string
-	secure   bool
-	username string
-	password string
-	conn     *grpc.ClientConn
-	client   otpPb.OtpClient
+	uri          string
+	secure       bool
+	username     string
+	password     string
+	conn         *grpc.ClientConn
+	client       otpPb.OtpClient
+	interceptors []grpc.DialOption
 }
 
-func NewClient(uri string, secure bool, username, password string) otp.Client {
+func NewClient(uri string, secure bool, username, password string, interceptors ...grpc.DialOption) otp.Client {
 	return &Client{
-		uri:      uri,
-		secure:   secure,
-		username: username,
-		password: password,
+		uri:          uri,
+		secure:       secure,
+		username:     username,
+		password:     password,
+		interceptors: interceptors,
 	}
 }
 
@@ -39,16 +41,13 @@ func (c *Client) Connect() (err error) {
 		return fmt.Errorf("otp-client uri is empty")
 	}
 
-	errInterceptor := &grpcClientInterceptorErrorT{
-		errMessagePrefix: clientName,
-	}
-
 	dialOptions := []grpc.DialOption{
 		grpc.WithDefaultCallOptions(grpc.MaxCallSendMsgSize(math.MaxInt32)),
 		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(math.MaxInt32)),
 		grpc.WithUnaryInterceptor(otgrpc.OpenTracingClientInterceptor(opentracing.GlobalTracer())),
-		grpc.WithUnaryInterceptor(errInterceptor.grpcClientInterceptorError),
 	}
+
+	dialOptions = append(dialOptions, c.interceptors...)
 
 	if c.secure {
 		dialOptions = append(dialOptions, grpc.WithTransportCredentials(credentials.NewTLS(nil)))
